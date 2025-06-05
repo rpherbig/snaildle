@@ -45,6 +45,11 @@ A Discord bot that facilitates a Wordle-like game using words from the game Supe
    npm run dev
    ```
 
+## Invite the Bot
+
+Add Snaildle to your server using this invite link:
+[Invite Snaildle](https://discord.com/api/oauth2/authorize?client_id=1379939127448830003&permissions=274878221376&scope=bot%20applications.commands)
+
 ## Commands
 
 - `/snaildle start` - Start a new game
