@@ -17,30 +17,33 @@ interface FilterStats {
     finalCount: number;
 }
 
-function isWordValid(word: string): { valid: boolean; reason?: string } {
-    // Check if word contains only letters
-    if (!/^[a-zA-Z]+$/.test(word)) {
+function isWordValid(word: string): { valid: boolean; reason?: string; normalizedWord?: string } {
+    // Normalize word by removing non-alphabetic characters
+    const normalizedWord = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    
+    // Check if normalized word is empty
+    if (normalizedWord.length === 0) {
         return { valid: false, reason: 'non-alphabetic' };
     }
 
     // Check length
-    if (word.length !== 5) {
+    if (normalizedWord.length !== 5) {
         return { valid: false, reason: 'wrong-length' };
     }
 
     // Check for vowels
-    const hasVowel = Array.from(word.toLowerCase()).some(char => VOWELS.has(char));
+    const hasVowel = Array.from(normalizedWord).some(char => VOWELS.has(char));
     if (!hasVowel) {
         return { valid: false, reason: 'no-vowels' };
     }
 
     // Check for consonants
-    const hasConsonant = Array.from(word.toLowerCase()).some(char => !VOWELS.has(char));
+    const hasConsonant = Array.from(normalizedWord).some(char => !VOWELS.has(char));
     if (!hasConsonant) {
         return { valid: false, reason: 'no-consonants' };
     }
 
-    return { valid: true };
+    return { valid: true, normalizedWord };
 }
 
 function processWords(): void {
@@ -64,9 +67,10 @@ function processWords(): void {
 
     // Process words
     const validWords = new Set<string>();
+    const normalizedWords = new Map<string, string>(); // Map of normalized -> original words
     
     for (const word of words) {
-        const { valid, reason } = isWordValid(word);
+        const { valid, reason, normalizedWord } = isWordValid(word);
         
         if (!valid) {
             switch (reason) {
@@ -88,9 +92,11 @@ function processWords(): void {
 
         // Add to set (automatically handles duplicates)
         const beforeSize = validWords.size;
-        validWords.add(word);
+        validWords.add(normalizedWord!);
         if (validWords.size === beforeSize) {
             stats.duplicates++;
+        } else {
+            normalizedWords.set(normalizedWord!, word);
         }
     }
 
@@ -102,7 +108,7 @@ function processWords(): void {
     // Write to file
     fs.writeFileSync(ANSWER_WORDS_PATH, sortedWords.join('\n'));
 
-    // Log statistics
+    // Log statistics and examples of normalized words
     console.log('\nWord Processing Statistics:');
     console.log('------------------------');
     console.log(`Total words processed: ${stats.totalWords}`);
@@ -112,6 +118,18 @@ function processWords(): void {
     console.log(`Words with no consonants: ${stats.noConsonants}`);
     console.log(`Duplicate words removed: ${stats.duplicates}`);
     console.log(`Final word count: ${stats.finalCount}`);
+
+    // Log examples of normalized words
+    console.log('\nExamples of normalized words:');
+    console.log('------------------------');
+    let count = 0;
+    for (const [normalized, original] of normalizedWords.entries()) {
+        if (normalized !== original) {
+            console.log(`${original} -> ${normalized}`);
+            count++;
+            if (count >= 10) break;
+        }
+    }
 
     if (stats.finalCount < 100) {
         console.warn('\nWarning: Less than 100 valid words found!');

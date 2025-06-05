@@ -15,6 +15,7 @@ aries
 armor
 arrow
 aulos
+aviii
 award
 azoth
 aztec
@@ -24,6 +25,7 @@ basic
 basse
 baton
 beast
+bells
 benin
 berry
 biker
@@ -123,6 +125,7 @@ flute
 flyer
 front
 fruit
+gaeas
 gamma
 gansu
 gears
@@ -151,6 +154,7 @@ harem
 heart
 heavy
 helix
+heras
 herma
 higgs
 hills
@@ -163,13 +167,16 @@ hoxne
 human
 iliad
 indus
+infin
 inner
 intel
 jenny
 juice
+kapas
 kazan
 kemet
 khufo
+kings
 klein
 kyber
 laser
@@ -179,6 +186,7 @@ lewis
 libra
 light
 lions
+lords
 lotus
 louis
 lucia
@@ -207,10 +215,12 @@ mundi
 mural
 music
 nebra
+nerds
 nerve
 night
 ninja
 niten
+noahs
 noble
 nomad
 north
@@ -224,6 +234,7 @@ organ
 outer
 packs
 paper
+parks
 peace
 peach
 pearl
@@ -254,6 +265,7 @@ realm
 rebel
 relic
 river
+rlyeh
 robot
 roman
 roses
@@ -276,6 +288,8 @@ skill
 skull
 slain
 slate
+slugs
+smugs
 snail
 solar
 songs
@@ -302,6 +316,7 @@ super
 sutra
 sword
 table
+taros
 tawla
 tears
 teddy
@@ -339,6 +354,7 @@ water
 wheat
 wheel
 white
+wills
 wings
 woman
 works
