@@ -9,16 +9,19 @@
     "dev": "ts-node src/bot/main.ts",
     "watch": "tsc -w",
     "scrape": "ts-node src/word_generation/scraper.ts",
-    "process-answers": "ts-node src/word_generation/answer_filter.ts"
+    "process-answers": "ts-node src/word_generation/answer_filter.ts",
+    "process-guesses": "ts-node src/word_generation/guess_generator.ts"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.6.12",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
+    "node-fetch": "^3.3.2",
     "playwright": "^1.52.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.17.57",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   }
 }

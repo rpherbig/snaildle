@@ -52,10 +52,10 @@
     - 348 valid words in final list
   - Successfully exceeds minimum target of 100 words
 
-### Step 3: Guess Word List Generation
+### Step 3: Guess Word List Generation ✅
 - Inputs:
   - `data/answer_words.txt`
-  - Wordle's guess list (from https://github.com/topics/wordle-word-list)
+  - Wordle's guess list (from https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c)
 - Output: `data/guess_words.txt`
 - Process:
   1. Load Wordle's guess list
@@ -63,10 +63,14 @@
   3. Apply same filtering as answer words
   4. Remove duplicates
   5. Save to `data/guess_words.txt`
-- Considerations:
-  - Ensure guess list is larger than answer list
-  - Validate word quality
-  - Consider adding manual review step
+- Implementation details:
+  - Implemented in `src/word_generation/guess_generator.ts`
+  - Run with `npm run process-guesses`
+  - Uses the official Wordle allowed guesses list: https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c
+  - Ensures guess list is larger than answer list
+  - Validates word quality
+  - Outputs 10,933 valid guess words as of current run
+  - Consider adding manual review step if needed
   - Document any words removed from Wordle's list
 
 ## Game Mechanics

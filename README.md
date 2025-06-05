@@ -57,10 +57,13 @@ The project is structured as follows:
 - `data/` - Word lists and game state files
   - `raw_wiki_content.txt` - Raw scraped content from wiki
   - `answer_words.txt` - Processed 5-letter words for answers
+  - `guess_words.txt` - Processed 5-letter words for guesses
+  - `games/` - Game state files for each channel
 - `src/` - Source code
   - `word_generation/` - Scripts for generating word lists
     - `scraper.ts` - Wiki content scraper
     - `answer_filter.ts` - Answer word processor
+    - `guess_generator.ts` - Guess word generator
   - `bot/` - Discord bot code
   - `utils/` - Utility functions
 - `dist/` - Compiled JavaScript files
@@ -70,13 +73,13 @@ The project is structured as follows:
 
 ### Scraping Wiki Content
 To scrape content from the Super Snail wiki:
-   ```bash
-   npm run scrape
-   ```
+```bash
+npm run scrape
+```
 This will:
-   - Visit each category page
-   - Extract page titles and subcategories
-   - Handle pagination
+- Visit each category page
+- Extract page titles and subcategories
+- Handle pagination
 - Save progress to allow resuming
 - Output to `data/raw_wiki_content.txt`
 
@@ -98,3 +101,17 @@ Current results:
 - 1,592 non-alphabetic words removed
 - 3,082 duplicates removed
 - 348 valid words in final list
+
+### Processing Guess Words
+To generate the guess word list:
+```bash
+npm run process-guesses
+```
+This will:
+- Combine answer words with Wordle's guess list (sourced from https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c)
+- Apply same filtering as answer words
+- Remove duplicates
+- Output to `data/guess_words.txt`
+
+Current results:
+- 10,933 valid guess words in the final list
