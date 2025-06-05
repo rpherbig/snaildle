@@ -34,7 +34,7 @@
 - Processing steps:
   1. Split text into words
   2. Filter criteria:
-     - Remove non-alphabetic characters
+     - Normalize words by removing non-alphabetic characters
      - Convert to lowercase
      - Keep only 5-letter words
      - Remove duplicates (case-insensitive)
@@ -47,9 +47,10 @@
   - Alphabetical sorting of final word list
   - Current results:
     - 20,090 total words processed
-    - 1,592 non-alphabetic words removed
-    - 3,082 duplicates removed
-    - 348 valid words in final list
+    - 111 words normalized (non-alphabetic characters removed)
+    - 16,441 words wrong length
+    - 3,174 duplicates removed
+    - 364 valid words in final list
   - Successfully exceeds minimum target of 100 words
 
 ### Step 3: Guess Word List Generation ✅
@@ -99,15 +100,13 @@
    - Ends current game
    - Reveals the answer
    - Error: "No game is currently in progress!" (ephemeral)
-3. `/guess [word]` (Next Step)
-   - Submits a guess
-   - Returns color-coded result
-   - Validates word is in guess list
+3. `/guess [word]` (In Progress)
+   - Makes a guess in the current game
+   - Validates word against guess list
+   - Provides Wordle-style feedback
    - Error: "No game is currently in progress!" (ephemeral)
-   - Invalid word errors:
-     - "That's not a valid word!" (ephemeral)
-     - "Please guess a 5-letter word!" (ephemeral)
-     - "Please use only letters!" (ephemeral)
+   - Error: "That's not a valid word!" (ephemeral)
+   - Error: "Please guess a 5-letter word!" (ephemeral)
 
 ### Game State ✅
 - Persist to JSON file immediately after each state change
@@ -182,7 +181,7 @@ snaildle/
 4. ✅ Implement answer word filtering
 5. ✅ Implement guess word list generation
 6. ✅ Implement basic bot commands (start/forfeit)
-7. Implement guess command with Wordle-style feedback
+7. 🔄 Implement guess command with Wordle-style feedback
 8. Add file locking for concurrent access
 9. Add comprehensive error handling
 10. Add logging

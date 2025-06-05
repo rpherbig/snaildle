@@ -49,7 +49,7 @@ Add Snaildle to your server using this invite link:
 
 - `/snaildle start` - Start a new game
 - `/snaildle forfeit` - Forfeit the current game
-- `/guess [word]` - Make a guess (coming soon)
+- `/guess [word]` - Make a guess (in progress)
 
 ## Development
 
@@ -90,8 +90,9 @@ To process the raw content into valid answer words:
 npm run process-answers
 ```
 This will:
+- Normalize words by removing non-alphabetic characters
+- Convert to lowercase
 - Filter for 5-letter words
-- Remove non-alphabetic characters
 - Remove duplicates
 - Ensure words have vowels and consonants
 - Sort alphabetically
@@ -99,9 +100,10 @@ This will:
 
 Current results:
 - 20,090 total words processed
-- 1,592 non-alphabetic words removed
-- 3,082 duplicates removed
-- 348 valid words in final list
+- 111 words normalized (non-alphabetic characters removed)
+- 16,441 words wrong length
+- 3,174 duplicates removed
+- 364 valid words in final list
 
 ### Processing Guess Words
 To generate the guess word list:
