@@ -19,6 +19,18 @@ const commands = [
         description: 'Forfeit the current game and reveal the answer'
       }
     ]
+  },
+  {
+    name: 'guess',
+    description: 'Make a guess in the current Snaildle game',
+    options: [
+      {
+        name: 'word',
+        type: 3, // STRING
+        description: 'Your 5-letter guess',
+        required: true
+      }
+    ]
   }
 ];
 
