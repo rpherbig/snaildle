@@ -9,6 +9,7 @@ dist/
 .env
 
 # Project specific
+data/scrape_progress.json
 data/raw_wiki_content.txt
 data/answer_words.txt
 data/guess_words.txt

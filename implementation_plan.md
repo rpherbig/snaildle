@@ -2,7 +2,7 @@
 
 ## Word List Generation Process
 
-### Step 1: Web Scraping
+### Step 1: Web Scraping ✅
 - Target URLs:
   - Characters: https://supersnail.wiki.gg/wiki/Category:Characters
   - Gears: https://supersnail.wiki.gg/wiki/Category:Gears
@@ -10,23 +10,23 @@
   - Locations: https://supersnail.wiki.gg/wiki/Category:Locations
   - Organs: https://supersnail.wiki.gg/wiki/Category:Organs
   - Relics: https://supersnail.wiki.gg/wiki/Category:Relics
-- Tools needed:
-  - Python requests library for HTTP requests
-  - BeautifulSoup4 for HTML parsing
+- Tools used:
+  - Playwright for browser automation
+  - TypeScript for type safety
 - Process:
   1. For each target category:
-     - Fetch the category page
-     - Extract links to individual pages
-     - Follow each link and extract text content
+     - Launch headless browser
+     - Navigate to category page
+     - Extract page titles and subcategories
+     - Follow pagination links if present
+     - Recursively process subcategories
   2. Save raw text to `data/raw_wiki_content.txt`
-- Considerations:
-  - Respect robots.txt
-  - Implement rate limiting (suggest 1 request per 2 seconds)
-  - Handle network errors gracefully
-  - Log scraping progress
-  - Skip navigation menus and common wiki elements
-  - Focus on content-rich pages
-  - Note: We will not scrape the main wiki page itself
+- Implementation details:
+  - Rate limiting: 5-10 seconds between requests
+  - Error handling with exponential backoff
+  - Progress tracking for resumable scraping
+  - Cloudflare protection handling
+  - Proper browser headers and viewport settings
 
 ### Step 2: Answer Word List Generation
 - Input: `data/raw_wiki_content.txt`
@@ -147,12 +147,14 @@
 4. Add bot to server with proper permissions
 
 ### Development Environment
-- Python 3.x
+- Node.js 16+
+- TypeScript
 - Dependencies:
-  - discord.py
-  - python-dotenv (for token management)
-  - requests (for web scraping)
-  - beautifulsoup4 (for web scraping)
+  - discord.js
+  - dotenv (for token management)
+  - playwright (for web scraping)
+  - typescript
+  - ts-node (for development)
 
 ### Project Structure
 ```
@@ -165,20 +167,21 @@ snaildle/
 │       └── {channel_id}.json
 ├── src/
 │   ├── word_generation/
-│   │   ├── scraper.py
-│   │   ├── answer_filter.py
-│   │   └── guess_generator.py
+│   │   ├── scraper.ts
+│   │   ├── answer_filter.ts
+│   │   └── guess_generator.ts
 │   ├── bot/
-│   │   ├── main.py
-│   │   ├── commands.py
-│   │   └── game_state.py
+│   │   ├── main.ts
+│   │   ├── commands.ts
+│   │   └── game_state.ts
 │   └── utils/
-│       ├── word_validation.py
-│       └── file_locking.py
+│       ├── word_validation.ts
+│       └── file_locking.ts
 ├── tests/
 ├── .env
 ├── .gitignore
-├── requirements.txt
+├── package.json
+├── tsconfig.json
 └── README.md
 ```
 

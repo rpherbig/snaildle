@@ -25,12 +25,17 @@ A Discord bot that facilitates a Wordle-like game using words from the game Supe
    npm install
    ```
 
-4. Build the project:
+4. Install Playwright browsers:
+   ```bash
+   npx playwright install chromium
+   ```
+
+5. Build the project:
    ```bash
    npm run build
    ```
 
-5. Run the bot:
+6. Run the bot:
    ```bash
    npm start
    ```
@@ -50,9 +55,25 @@ A Discord bot that facilitates a Wordle-like game using words from the game Supe
 
 The project is structured as follows:
 - `data/` - Word lists and game state files
+  - `raw_wiki_content.txt` - Raw scraped content from wiki
 - `src/` - Source code
   - `word_generation/` - Scripts for generating word lists
+    - `scraper.ts` - Wiki content scraper
   - `bot/` - Discord bot code
   - `utils/` - Utility functions
 - `dist/` - Compiled JavaScript files
 - `tests/` - Test files
+
+## Word List Generation
+
+### Scraping Wiki Content
+To scrape content from the Super Snail wiki:
+   ```bash
+   npm run scrape
+   ```
+This will:
+   - Visit each category page
+   - Extract page titles and subcategories
+   - Handle pagination
+   - Save progress to allow resuming
+   - Output to `data/raw_wiki_content.txt`

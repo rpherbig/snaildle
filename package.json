@@ -1,0 +1,23 @@
+{
+  "name": "snaildle",
+  "version": "1.0.0",
+  "description": "A Discord bot for playing a Wordle-like game with Super Snail content",
+  "main": "dist/bot/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/bot/main.js",
+    "dev": "ts-node src/bot/main.ts",
+    "watch": "tsc -w",
+    "scrape": "ts-node src/word_generation/scraper.ts"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "playwright": "^1.52.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
