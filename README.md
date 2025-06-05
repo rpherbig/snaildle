@@ -30,19 +30,14 @@ A Discord bot that facilitates a Wordle-like game using words from the game Supe
    npx playwright install chromium
    ```
 
-5. Build the project:
+5. Deploy commands:
    ```bash
-   npm run build
+   npm run deploy-commands
    ```
 
-6. Run the bot:
+6. Start the bot:
    ```bash
    npm start
-   ```
-
-   For development with auto-reload:
-   ```bash
-   npm run dev
    ```
 
 ## Invite the Bot
@@ -54,7 +49,7 @@ Add Snaildle to your server using this invite link:
 
 - `/snaildle start` - Start a new game
 - `/snaildle forfeit` - Forfeit the current game
-- `/guess [word]` - Make a guess
+- `/guess [word]` - Make a guess (coming soon)
 
 ## Development
 
@@ -70,7 +65,8 @@ The project is structured as follows:
     - `answer_filter.ts` - Answer word processor
     - `guess_generator.ts` - Guess word generator
   - `bot/` - Discord bot code
-  - `utils/` - Utility functions
+    - `main.ts` - Bot setup and command handling
+    - `commands.ts` - Command implementations
 - `dist/` - Compiled JavaScript files
 - `tests/` - Test files
 

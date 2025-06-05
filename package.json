@@ -5,8 +5,7 @@
   "main": "dist/bot/main.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/bot/main.js",
-    "dev": "ts-node src/bot/main.ts",
+    "start": "ts-node src/bot/main.ts",
     "watch": "tsc -w",
     "scrape": "ts-node src/word_generation/scraper.ts",
     "process-answers": "ts-node src/word_generation/answer_filter.ts",

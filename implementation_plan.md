@@ -90,21 +90,16 @@
   - Non-alphabetic characters: "Please use only letters!"
 
 ### Commands
-1. `/snaildle start`
+1. `/snaildle start` ✅
    - Starts a new game in the channel
    - Fails if a game is already active
    - Selects random word from answer list
    - Error: "A game is already in progress!" (ephemeral)
-2. `/snaildle forfeit`
-   - Shows confirmation button
-   - Button options:
-     - "Yes, forfeit the game" (confirms forfeit)
-     - "No, keep playing" (dismisses)
-   - On confirmation:
-     - Ends current game
-     - Reveals the answer
+2. `/snaildle forfeit` ✅
+   - Ends current game
+   - Reveals the answer
    - Error: "No game is currently in progress!" (ephemeral)
-3. `/guess [word]`
+3. `/guess [word]` (Next Step)
    - Submits a guess
    - Returns color-coded result
    - Validates word is in guess list
@@ -114,7 +109,7 @@
      - "Please guess a 5-letter word!" (ephemeral)
      - "Please use only letters!" (ephemeral)
 
-### Game State
+### Game State ✅
 - Persist to JSON file immediately after each state change
 - File structure:
   - One JSON file per channel: `data/games/{channel_id}.json`
@@ -132,18 +127,10 @@
   1. Game start: Create new JSON file for channel
   2. Each guess: Append to guesses array
   3. Game end: Set active to false
-- File locking:
-  - Use Python's `fcntl` (Unix) or `msvcrt` (Windows) for file locking
-  - Acquire lock before reading/writing JSON file
-  - Release lock after operation completes
-  - Handle lock timeout (suggest 5 seconds)
-  - Error handling:
-    - If lock can't be acquired: "Please try your guess again in a moment"
-    - If lock times out: "The game is busy, please try again"
 
 ## Technical Implementation
 
-### Discord Bot Setup
+### Discord Bot Setup ✅
 1. Create Discord application
 2. Set up bot with required permissions:
    - Send Messages
@@ -152,7 +139,7 @@
 3. Generate and secure bot token
 4. Add bot to server with proper permissions
 
-### Development Environment
+### Development Environment ✅
 - Node.js 16+
 - TypeScript
 - Dependencies:
@@ -162,7 +149,7 @@
   - typescript
   - ts-node (for development)
 
-### Project Structure
+### Project Structure ✅
 ```
 snaildle/
 ├── data/
@@ -178,11 +165,8 @@ snaildle/
 │   │   └── guess_generator.ts
 │   ├── bot/
 │   │   ├── main.ts
-│   │   ├── commands.ts
-│   │   └── game_state.ts
+│   │   └── commands.ts
 │   └── utils/
-│       ├── word_validation.ts
-│       └── file_locking.ts
 ├── tests/
 ├── .env
 ├── .gitignore
@@ -191,25 +175,17 @@ snaildle/
 └── README.md
 ```
 
-### Implementation Notes
-- Each step should be implemented as a separate Python script
-- Use argparse for command-line arguments
-- Include logging for debugging and monitoring
-- Add unit tests for each processing step
-- Document any manual steps or decisions needed
-- Create a requirements.txt file for dependencies
-- Write state to JSON file immediately after each state change
-- Validate word lists before starting the bot
-
 ### Next Steps
-1. Set up Discord bot and get token
-2. Implement web scraping script
-3. Test with small subset of pages (suggest starting with Character pages)
-4. Implement answer word filtering
-5. Implement guess word list generation
-6. Implement basic bot commands
-7. Review and refine word lists
-8. Document any manual curation needed
+1. ✅ Set up Discord bot and get token
+2. ✅ Implement web scraping script
+3. ✅ Test with small subset of pages
+4. ✅ Implement answer word filtering
+5. ✅ Implement guess word list generation
+6. ✅ Implement basic bot commands (start/forfeit)
+7. Implement guess command with Wordle-style feedback
+8. Add file locking for concurrent access
+9. Add comprehensive error handling
+10. Add logging
 
 ### Future Considerations
 - Add more sophisticated filtering if needed

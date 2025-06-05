@@ -1,5 +1,6 @@
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, Events, GatewayIntentBits, ChatInputCommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
+import { commands } from './commands';
 
 // Load environment variables
 dotenv.config();
@@ -12,12 +13,38 @@ const client = new Client({
   ]
 });
 
-client.once('ready', () => {
+// Create commands collection
+interface Command {
+  name: string;
+  execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
+}
+
+const commandsCollection = new Collection<string, Command>();
+for (const command of commands) {
+  commandsCollection.set(command.name, command);
+}
+
+client.once(Events.ClientReady, () => {
   console.log(`${client.user?.tag} has connected to Discord!`);
 });
 
-// Load commands
-// TODO: Add command implementations
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = commandsCollection.get(interaction.commandName);
+  if (!command) return;
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+    } else {
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
+  }
+});
 
 const main = async () => {
   const token = process.env.TOKEN;
