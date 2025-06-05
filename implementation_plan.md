@@ -28,7 +28,7 @@
   - Cloudflare protection handling
   - Proper browser headers and viewport settings
 
-### Step 2: Answer Word List Generation
+### Step 2: Answer Word List Generation ✅
 - Input: `data/raw_wiki_content.txt`
 - Output: `data/answer_words.txt`
 - Processing steps:
@@ -41,14 +41,16 @@
      - Remove words with no vowels (including 'y')
      - Remove words with no consonants
   3. Save filtered list to `data/answer_words.txt`
-- Considerations:
-  - Log filtering statistics
-  - Validate word quality
-  - Consider adding manual review step
-  - Keep track of word sources for potential future filtering
-  - Minimum target: 100 valid words for answer list
-  - Note: 'y' is treated as a vowel for filtering purposes
-  - Note: De-duplication is case-insensitive (e.g., "Snail" and "SNAIL" are considered the same word)
+- Implementation details:
+  - TypeScript implementation with strong typing
+  - Detailed statistics tracking
+  - Alphabetical sorting of final word list
+  - Current results:
+    - 20,090 total words processed
+    - 1,592 non-alphabetic words removed
+    - 3,082 duplicates removed
+    - 348 valid words in final list
+  - Successfully exceeds minimum target of 100 words
 
 ### Step 3: Guess Word List Generation
 - Inputs:

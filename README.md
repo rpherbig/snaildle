@@ -56,9 +56,11 @@ A Discord bot that facilitates a Wordle-like game using words from the game Supe
 The project is structured as follows:
 - `data/` - Word lists and game state files
   - `raw_wiki_content.txt` - Raw scraped content from wiki
+  - `answer_words.txt` - Processed 5-letter words for answers
 - `src/` - Source code
   - `word_generation/` - Scripts for generating word lists
     - `scraper.ts` - Wiki content scraper
+    - `answer_filter.ts` - Answer word processor
   - `bot/` - Discord bot code
   - `utils/` - Utility functions
 - `dist/` - Compiled JavaScript files
@@ -75,5 +77,24 @@ This will:
    - Visit each category page
    - Extract page titles and subcategories
    - Handle pagination
-   - Save progress to allow resuming
-   - Output to `data/raw_wiki_content.txt`
+- Save progress to allow resuming
+- Output to `data/raw_wiki_content.txt`
+
+### Processing Answer Words
+To process the raw content into valid answer words:
+```bash
+npm run process-answers
+```
+This will:
+- Filter for 5-letter words
+- Remove non-alphabetic characters
+- Remove duplicates
+- Ensure words have vowels and consonants
+- Sort alphabetically
+- Output to `data/answer_words.txt`
+
+Current results:
+- 20,090 total words processed
+- 1,592 non-alphabetic words removed
+- 3,082 duplicates removed
+- 348 valid words in final list

@@ -8,7 +8,8 @@
     "start": "node dist/bot/main.js",
     "dev": "ts-node src/bot/main.ts",
     "watch": "tsc -w",
-    "scrape": "ts-node src/word_generation/scraper.ts"
+    "scrape": "ts-node src/word_generation/scraper.ts",
+    "process-answers": "ts-node src/word_generation/answer_filter.ts"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
