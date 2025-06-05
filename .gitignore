@@ -9,7 +9,6 @@ dist/
 
 # Project specific
 data/scrape_progress.json
-data/raw_wiki_content.txt
 data/games/
 
 # IDE
