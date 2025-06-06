@@ -182,9 +182,36 @@ snaildle/
 5. ✅ Implement guess word list generation
 6. ✅ Implement basic bot commands (start/forfeit)
 7. 🔄 Implement guess command with Wordle-style feedback
-8. Add file locking for concurrent access
-9. Add comprehensive error handling
-10. Add logging
+8. 🔄 Implement database integration
+   - Set up SQLite database with better-sqlite3
+   - Create database schema:
+     - Games table (gameId, answerWord, channelId, startTime, endTime, solved, forfeit, guessCount, winningUser, participantCount)
+     - Guesses table (guessId, gameId, userId, guessWord, guessNumber, timestamp)
+     - Players table (userId, username, firstSeen, lastActive)
+   - Implement database operations:
+     - Game creation and updates
+     - Guess recording
+     - Player tracking
+     - Statistics calculation
+9. 🔄 Implement statistics tracking
+   - Per Player Statistics:
+     - Basic Stats (win count, total guess count, guess to win ratio, average guesses per win, participation rate)
+     - Streak Stats (current/longest win streak, current/longest participation streak)
+     - Performance Stats (first guess distribution, average game duration, win rate)
+   - Per Channel Statistics:
+     - Player Rankings (most wins, most guesses, most participation)
+     - Game Metrics (average guesses per puzzle, average participants per puzzle, win rate, average game duration)
+     - Time-based Stats (most active time of day, most active day of week)
+     - Word Stats (most common answer words, most successful first guesses)
+   - Global Statistics:
+     - Total games played
+     - Total players
+     - Average win rate
+     - Most active channels
+     - Most successful players
+10. Add file locking for concurrent access
+11. Add comprehensive error handling
+12. Add logging
 
 ### Future Considerations
 - Add more sophisticated filtering if needed
@@ -192,10 +219,7 @@ snaildle/
 - Add word frequency analysis
 - Create a process for updating word lists as the wiki grows
 - Add scoring system
-- Add player statistics
-- Add game history
 - Add help and hint commands
-- Migrate to proper database if needed
 - Add multiple game support per channel
 - Add rate limiting
 - Add spam protection
@@ -205,4 +229,12 @@ snaildle/
 - Add configuration file
 - Add logging configuration
 - Add word list validation script
-- Add command testing script 
+- Add command testing script
+- Add database optimization and caching
+- Add regular maintenance tasks
+- Add backup procedures
+- Add web dashboard for statistics
+- Add multi-language support
+- Add custom word lists
+- Add tournament mode
+- Add integration with other Discord features 
