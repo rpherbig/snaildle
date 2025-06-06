@@ -1,11 +1,14 @@
 import Database from 'better-sqlite3';
 import { Game, Guess, Player } from './schema';
+import { StatsTracker } from './stats_tracker';
 
 export class DatabaseOperations {
     private db: Database.Database;
+    private statsTracker: StatsTracker;
 
     constructor(db: Database.Database) {
         this.db = db;
+        this.statsTracker = new StatsTracker(db);
     }
 
     // Game Operations
@@ -204,5 +207,9 @@ export class DatabaseOperations {
         `).get(channelId) as Game | undefined;
 
         return game || null;
+    }
+
+    getStatsTracker(): StatsTracker {
+        return this.statsTracker;
     }
 } 

@@ -134,6 +134,69 @@ export const commands = [
           ephemeral: true
         });
       }
+      else if (subcommand === 'stats') {
+        const stats = db.getStatsTracker();
+        const userStats = stats.getPlayerStats(interaction.user.id, channelId);
+        
+        if (!userStats) {
+          await interaction.reply({
+            content: 'You haven\'t played any games in this channel yet!',
+            ephemeral: true
+          });
+          return;
+        }
+
+        const user = await interaction.client.users.fetch(interaction.user.id);
+        const statsMessage = [
+          `**${user.username}'s Stats**`,
+          '',
+          '**Basic Stats**',
+          `Games Won: ${userStats.winCount}`,
+          `Total Guesses: ${userStats.totalGuessCount}`,
+          `Average Guesses per Win: ${userStats.averageGuessesPerWin.toFixed(1)}`,
+          `Win Rate: ${(userStats.winRate * 100).toFixed(1)}%`
+        ].join('\n');
+
+        await interaction.reply(statsMessage);
+      }
+      else if (subcommand === 'leaderboard') {
+        const stats = db.getStatsTracker();
+        const leaderboard = stats.getChannelLeaderboard(channelId);
+        const channelStats = stats.getChannelStats(channelId);
+        
+        if (!leaderboard || leaderboard.length === 0) {
+          await interaction.reply({
+            content: 'No games have been played in this channel yet!',
+            ephemeral: true
+          });
+          return;
+        }
+
+        const leaderboardMessage = [
+          '**Channel Leaderboard**',
+          '',
+          '**Channel Stats**',
+          `Solve Rate: ${(channelStats.solveRate * 100).toFixed(1)}%`,
+          `Median Guesses per Solved: ${channelStats.medianGuessesPerSolved.toFixed(1)}`,
+          `Average Participants per Game: ${channelStats.avgParticipantsPerGame.toFixed(1)}`,
+          '',
+          '**Top Players**'
+        ];
+        
+        for (let i = 0; i < leaderboard.length; i++) {
+          const player = leaderboard[i];
+          const user = await interaction.client.users.fetch(player.userId);
+          leaderboardMessage.push(
+            `${i + 1}. **${user.username}**`,
+            `   Wins: ${player.winCount}`,
+            `   Win Rate: ${(player.winRate * 100).toFixed(1)}%`,
+            `   Avg Guesses: ${player.averageGuessesPerWin.toFixed(1)}`,
+            ''
+          );
+        }
+
+        await interaction.reply(leaderboardMessage.join('\n'));
+      }
     }
   },
   {

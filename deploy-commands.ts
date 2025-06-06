@@ -22,6 +22,16 @@ const commands = [
         name: 'debug',
         type: 1, // SUB_COMMAND
         description: 'View database contents (bot owner only)'
+      },
+      {
+        name: 'stats',
+        type: 1, // SUB_COMMAND
+        description: 'View your stats for this channel'
+      },
+      {
+        name: 'leaderboard',
+        type: 1, // SUB_COMMAND
+        description: 'View the leaderboard for this channel'
       }
     ]
   },
