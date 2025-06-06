@@ -14,12 +14,14 @@
   },
   "dependencies": {
     "@types/node-fetch": "^2.6.12",
+    "better-sqlite3": "^9.4.3",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "node-fetch": "^3.3.2",
     "playwright": "^1.52.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.9",
     "@types/node": "^20.17.57",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

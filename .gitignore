@@ -9,7 +9,7 @@ dist/
 
 # Project specific
 data/scrape_progress.json
-data/games/
+data/*.db
 
 # IDE
 .vscode/

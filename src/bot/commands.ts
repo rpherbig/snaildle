@@ -1,47 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import fs from 'fs/promises';
 import path from 'path';
-
-interface GameState {
-  active: boolean;
-  answer: string;
-  guesses: string[];
-  start_time: string;
-}
-
-const GAMES_DIR = path.join(process.cwd(), 'data', 'games');
-
-// Ensure games directory exists
-async function ensureGamesDir() {
-  try {
-    await fs.access(GAMES_DIR);
-  } catch {
-    await fs.mkdir(GAMES_DIR, { recursive: true });
-  }
-}
-
-// Get game state for a channel
-async function getGameState(channelId: string): Promise<GameState | null> {
-  const gameFile = path.join(GAMES_DIR, `${channelId}.json`);
-  try {
-    const data = await fs.readFile(gameFile, 'utf-8');
-    const state = JSON.parse(data);
-    // Trim the answer to remove any whitespace or carriage returns
-    if (state.answer) {
-      state.answer = state.answer.trim();
-    }
-    return state;
-  } catch {
-    return null;
-  }
-}
-
-// Save game state for a channel
-async function saveGameState(channelId: string, state: GameState) {
-  await ensureGamesDir();
-  const gameFile = path.join(GAMES_DIR, `${channelId}.json`);
-  await fs.writeFile(gameFile, JSON.stringify(state, null, 2));
-}
+import { getGameState, saveGameState } from './database';
 
 // Get random word from answer list
 async function getRandomWord(): Promise<string> {
@@ -117,7 +77,7 @@ export const commands = [
         }
 
         const answer = await getRandomWord();
-        const newState: GameState = {
+        const newState = {
           active: true,
           answer,
           guesses: [],
