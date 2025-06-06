@@ -17,6 +17,11 @@ const commands = [
         name: 'forfeit',
         type: 1, // SUB_COMMAND
         description: 'Forfeit the current game and reveal the answer'
+      },
+      {
+        name: 'debug',
+        type: 1, // SUB_COMMAND
+        description: 'View database contents (bot owner only)'
       }
     ]
   },

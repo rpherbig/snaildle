@@ -2,6 +2,15 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import fs from 'fs/promises';
 import path from 'path';
 import { getGameState, saveGameState } from './database';
+import Database from 'better-sqlite3';
+
+interface GameStateRow {
+  channel_id: string;
+  active: number;
+  answer: string;
+  guesses: string;
+  start_time: string;
+}
 
 // Get random word from answer list
 async function getRandomWord(): Promise<string> {
@@ -102,6 +111,34 @@ export const commands = [
         gameState.active = false;
         await saveGameState(channelId, gameState);
         await interaction.reply(`Game forfeited! The word was: ${gameState.answer}`);
+      }
+      else if (subcommand === 'debug') {
+        // Only allow bot owner to use debug commands
+        if (interaction.user.id !== process.env.OWNER_ID) {
+          await interaction.reply({
+            content: 'You do not have permission to use debug commands.',
+            ephemeral: true
+          });
+          return;
+        }
+
+        const db = new Database(path.join(process.cwd(), 'data', 'snaildle.db'));
+        const games = db.prepare('SELECT * FROM game_states').all() as GameStateRow[];
+        
+        const formattedGames = games.map(game => ({
+          channel: game.channel_id,
+          active: game.active === 1,
+          answer: game.answer,
+          guesses: JSON.parse(game.guesses),
+          startTime: game.start_time
+        }));
+
+        await interaction.reply({
+          content: '```json\n' + JSON.stringify(formattedGames, null, 2) + '\n```',
+          ephemeral: true
+        });
+
+        db.close();
       }
     }
   },
