@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import fs from 'fs/promises';
 import path from 'path';
-import { getGameState, saveGameState } from './database';
-import Database from 'better-sqlite3';
+import { getDbOperations } from '../database';
+import { Game, Guess } from '../database/schema';
 
 interface GameStateRow {
   channel_id: string;
@@ -73,11 +73,12 @@ export const commands = [
     async execute(interaction: ChatInputCommandInteraction) {
       const subcommand = interaction.options.getSubcommand();
       const channelId = interaction.channelId;
+      const db = getDbOperations();
 
       if (subcommand === 'start') {
-        const gameState = await getGameState(channelId);
+        const activeGame = db.getActiveGameForChannel(channelId);
         
-        if (gameState?.active) {
+        if (activeGame) {
           await interaction.reply({
             content: 'A game is already in progress!',
             ephemeral: true
@@ -86,21 +87,15 @@ export const commands = [
         }
 
         const answer = await getRandomWord();
-        const newState = {
-          active: true,
-          answer,
-          guesses: [],
-          start_time: new Date().toISOString()
-        };
+        const gameId = db.createGame(answer, channelId);
 
-        await saveGameState(channelId, newState);
         await interaction.reply('New Snaildle game started! Guess a 5-letter word.');
       }
 
       else if (subcommand === 'forfeit') {
-        const gameState = await getGameState(channelId);
+        const activeGame = db.getActiveGameForChannel(channelId);
         
-        if (!gameState?.active) {
+        if (!activeGame) {
           await interaction.reply({
             content: 'No game is currently in progress!',
             ephemeral: true
@@ -108,9 +103,12 @@ export const commands = [
           return;
         }
 
-        gameState.active = false;
-        await saveGameState(channelId, gameState);
-        await interaction.reply(`Game forfeited! The word was: ${gameState.answer}`);
+        db.updateGame(activeGame.gameId, {
+          endTime: Date.now(),
+          forfeit: true
+        });
+
+        await interaction.reply(`Game forfeited! The word was: ${activeGame.answerWord}`);
       }
       else if (subcommand === 'debug') {
         // Only allow bot owner to use debug commands
@@ -122,23 +120,19 @@ export const commands = [
           return;
         }
 
-        const db = new Database(path.join(process.cwd(), 'data', 'snaildle.db'));
-        const games = db.prepare('SELECT * FROM game_states').all() as GameStateRow[];
-        
-        const formattedGames = games.map(game => ({
-          channel: game.channel_id,
-          active: game.active === 1,
-          answer: game.answer,
-          guesses: JSON.parse(game.guesses),
-          startTime: game.start_time
-        }));
+        const activeGame = db.getActiveGameForChannel(channelId);
+        if (!activeGame) {
+          await interaction.reply({
+            content: 'No active game in this channel.',
+            ephemeral: true
+          });
+          return;
+        }
 
         await interaction.reply({
-          content: '```json\n' + JSON.stringify(formattedGames, null, 2) + '\n```',
+          content: '```json\n' + JSON.stringify(activeGame, null, 2) + '\n```',
           ephemeral: true
         });
-
-        db.close();
       }
     }
   },
@@ -146,11 +140,13 @@ export const commands = [
     name: 'guess',
     async execute(interaction: ChatInputCommandInteraction) {
       const channelId = interaction.channelId;
+      const userId = interaction.user.id;
       const guess = interaction.options.getString('word', true).toLowerCase();
+      const db = getDbOperations();
 
       // Validate game is active
-      const gameState = await getGameState(channelId);
-      if (!gameState?.active) {
+      const activeGame = db.getActiveGameForChannel(channelId);
+      if (!activeGame) {
         await interaction.reply({
           content: 'No game is currently in progress!',
           ephemeral: true
@@ -185,18 +181,36 @@ export const commands = [
         return;
       }
 
-      // Add guess to game state
-      gameState.guesses.push(guess);
-      await saveGameState(channelId, gameState);
+      // Check if this is a new participant BEFORE recording the guess
+      const isNewParticipant = !db.hasUserParticipated(activeGame.gameId, userId);
+
+      // Record the guess
+      const guessNumber = activeGame.guessCount + 1;
+      db.createGuess({
+        gameId: activeGame.gameId,
+        userId,
+        guessWord: guess,
+        guessNumber,
+        timestamp: Date.now()
+      });
+
+      // Update game state
+      db.incrementGameGuessCount(activeGame.gameId);
+      if (isNewParticipant) {
+        db.incrementGameParticipantCount(activeGame.gameId);
+      }
 
       // Get feedback
-      const feedback = getFeedback(guess, gameState.answer);
+      const feedback = getFeedback(guess, activeGame.answerWord);
 
       // Check for win
-      if (guess === gameState.answer.trim()) {
-        gameState.active = false;
-        await saveGameState(channelId, gameState);
-        await interaction.reply(`🎉 Correct! The word was ${gameState.answer}.\n\n${feedback}`);
+      if (guess === activeGame.answerWord) {
+        db.updateGame(activeGame.gameId, {
+          endTime: Date.now(),
+          solved: true,
+          winningUser: userId
+        });
+        await interaction.reply(`🎉 Correct! The word was ${activeGame.answerWord}.\n\n${feedback}`);
         return;
       }
 

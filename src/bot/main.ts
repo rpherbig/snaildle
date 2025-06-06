@@ -1,6 +1,8 @@
 import { Client, Collection, Events, GatewayIntentBits, ChatInputCommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import { commands } from './commands';
+import { initializeDbConnection } from '../database';
+import path from 'path';
 
 // Load environment variables
 dotenv.config();
@@ -56,6 +58,11 @@ const main = async () => {
   if (!clientId) {
     throw new Error('No Discord client ID found. Please set CLIENT_ID in .env file');
   }
+
+  // Initialize database
+  const dbPath = path.join(process.cwd(), 'data', 'snaildle.db');
+  initializeDbConnection(dbPath);
+  console.log('Database initialized');
 
   await client.login(token);
 };
