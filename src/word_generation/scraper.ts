@@ -12,8 +12,8 @@ const CATEGORIES = [
     '/wiki/Category:Relics'
 ];
 
-const OUTPUT_FILE = path.join(__dirname, '../../data/raw_wiki_content.txt');
-const PROGRESS_FILE = path.join(__dirname, '../../data/scrape_progress.json');
+const OUTPUT_FILE = path.join(process.cwd(), 'data', 'raw_wiki_content.txt');
+const PROGRESS_FILE = path.join(process.cwd(), 'data', 'scrape_progress.json');
 
 interface ScrapeProgress {
     completedCategories: string[];

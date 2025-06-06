@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const RAW_CONTENT_PATH = path.join(__dirname, '../../data/raw_wiki_content.txt');
-const ANSWER_WORDS_PATH = path.join(__dirname, '../../data/answer_words.txt');
+const RAW_CONTENT_PATH = path.join(process.cwd(), 'data', 'raw_wiki_content.txt');
+const ANSWER_WORDS_PATH = path.join(process.cwd(), 'data', 'answer_words.txt');
 
 // Vowels including 'y'
 const VOWELS = new Set(['a', 'e', 'i', 'o', 'u', 'y']);

@@ -48,7 +48,7 @@ async function generateGuessList() {
     try {
         // Read our answer words
         console.log('Reading answer words...');
-        const answerWordsPath = path.join(__dirname, '../../data/answer_words.txt');
+        const answerWordsPath = path.join(process.cwd(), 'data', 'answer_words.txt');
         const answerWords = fs.readFileSync(answerWordsPath, 'utf-8')
             .split(/\s+/)
             .map(word => word.trim().toLowerCase())
@@ -66,7 +66,7 @@ async function generateGuessList() {
         console.log(`Filtered to ${uniqueWords.size} valid words`);
 
         // Save to file using the utility function
-        const outputPath = path.join(__dirname, '../../data/guess_words.txt');
+        const outputPath = path.join(process.cwd(), 'data', 'guess_words.txt');
         writeWordsToFile(outputPath, Array.from(uniqueWords));
 
         console.log(`Generated guess word list with ${uniqueWords.size} words`);
@@ -78,4 +78,4 @@ async function generateGuessList() {
     }
 }
 
-generateGuessList(); 
+generateGuessList();

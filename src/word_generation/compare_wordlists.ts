@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import fetch from 'node-fetch';
 
-const CURRENT_GUESS_LIST_PATH = path.join(__dirname, '../../data/guess_words.txt');
+const CURRENT_GUESS_LIST_PATH = path.join(process.cwd(), 'data', 'guess_words.txt');
 const NEW_GUESS_LIST_URL = 'https://gist.githubusercontent.com/dracos/dd0668f281e685bad51479e5acaadb93/raw/valid-wordle-words.txt';
 
 async function downloadNewWordList(): Promise<string[]> {
