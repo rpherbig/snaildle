@@ -25,7 +25,12 @@ async function getGameState(channelId: string): Promise<GameState | null> {
   const gameFile = path.join(GAMES_DIR, `${channelId}.json`);
   try {
     const data = await fs.readFile(gameFile, 'utf-8');
-    return JSON.parse(data);
+    const state = JSON.parse(data);
+    // Trim the answer to remove any whitespace or carriage returns
+    if (state.answer) {
+      state.answer = state.answer.trim();
+    }
+    return state;
   } catch {
     return null;
   }
@@ -191,7 +196,7 @@ export const commands = [
       const feedback = getFeedback(guess, gameState.answer);
 
       // Check for win
-      if (guess === gameState.answer) {
+      if (guess === gameState.answer.trim()) {
         gameState.active = false;
         await saveGameState(channelId, gameState);
         await interaction.reply(`🎉 Correct! The word was ${gameState.answer}.\n\n${feedback}`);

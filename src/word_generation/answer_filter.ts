@@ -17,9 +17,21 @@ interface FilterStats {
     finalCount: number;
 }
 
+// Utility function to write words to file with consistent line endings
+function writeWordsToFile(filePath: string, words: string[]): void {
+    // Ensure all words are trimmed and sorted
+    const processedWords = words
+        .map(word => word.trim())
+        .filter(word => word.length > 0)
+        .sort();
+    
+    // Write with consistent \n line endings
+    fs.writeFileSync(filePath, processedWords.join('\n'));
+}
+
 function isWordValid(word: string): { valid: boolean; reason?: string; normalizedWord?: string } {
-    // Normalize word by removing non-alphabetic characters
-    const normalizedWord = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    // Normalize word by removing non-alphabetic characters and trimming
+    const normalizedWord = word.trim().replace(/[^a-zA-Z]/g, '').toLowerCase();
     
     // Check if normalized word is empty
     if (normalizedWord.length === 0) {
@@ -52,7 +64,7 @@ function processWords(): void {
     // Read raw content
     const rawContent = fs.readFileSync(RAW_CONTENT_PATH, 'utf-8');
     
-    // Split into words and convert to lowercase
+    // Split into words and convert to lowercase, handling any whitespace
     const words = rawContent.toLowerCase().split(/\s+/);
     
     const stats: FilterStats = {
@@ -102,11 +114,8 @@ function processWords(): void {
 
     stats.finalCount = validWords.size;
 
-    // Sort words alphabetically
-    const sortedWords = Array.from(validWords).sort();
-
-    // Write to file
-    fs.writeFileSync(ANSWER_WORDS_PATH, sortedWords.join('\n'));
+    // Write to file using the utility function
+    writeWordsToFile(ANSWER_WORDS_PATH, Array.from(validWords));
 
     // Log statistics and examples of normalized words
     console.log('\nWord Processing Statistics:');

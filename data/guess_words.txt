@@ -795,6 +795,7 @@ avers
 avert
 avgas
 avian
+aviii
 avine
 avion
 avise
@@ -4571,6 +4572,7 @@ gadis
 gadje
 gadjo
 gadso
+gaeas
 gaffe
 gaffs
 gaged
@@ -5467,6 +5469,7 @@ henny
 henry
 hents
 hepar
+heras
 herbs
 herby
 herds
@@ -5887,6 +5890,7 @@ inept
 inerm
 inert
 infer
+infin
 infix
 infos
 infra
@@ -10783,6 +10787,7 @@ rives
 rivet
 riyal
 rizas
+rlyeh
 roach
 roads
 roady
