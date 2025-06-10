@@ -8,6 +8,7 @@
     "start": "ts-node src/bot/main.ts",
     "watch": "tsc -w",
     "scrape": "ts-node src/word_generation/scraper.ts",
+    "scrape-categories": "ts-node src/word_generation/category_scraper.ts",
     "process-answers": "ts-node src/word_generation/answer_filter.ts",
     "process-guesses": "ts-node src/word_generation/guess_generator.ts",
     "deploy-commands": "ts-node deploy-commands.ts"
